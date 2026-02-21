@@ -1,0 +1,620 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage[most]{tcolorbox}
+\usepackage{pgfgantt}
+
+\definecolor{PageBg}{HTML}{EEF3FA}
+\definecolor{Primary}{HTML}{1E3A5F}
+\definecolor{Accent}{HTML}{0F766E}
+\definecolor{BodyText}{HTML}{1F2937}
+\definecolor{SoftBg}{HTML}{E3EBF7}
+\definecolor{TableStripe}{HTML}{DCE8F6}
+\definecolor{HeaderBg}{HTML}{274C77}
+\definecolor{HeaderText}{HTML}{F8FAFC}
+\definecolor{GanttBar}{HTML}{5F8FB8}
+\definecolor{GanttBarAlt}{HTML}{7AA6C2}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=Primary,
+  urlcolor=Accent,
+  pdftitle={OptiShift Technical Specification},
+  pdfauthor={Mohammad},
+  pdfsubject={Production-grade functional and technical specification}
+}
+
+\setstretch{1.12}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.35em}
+\setlength{\tabcolsep}{8pt}
+\renewcommand{\arraystretch}{1.28}
+\setlength{\LTpre}{0pt}
+\setlength{\LTpost}{0pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=0.3em,topsep=0.3em}
+\setlist[enumerate]{leftmargin=1.6em,itemsep=0.3em,topsep=0.3em}
+\raggedbottom
+
+\titleformat{\section}{\Large\bfseries\color{Primary}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{Primary}}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{Primary}}{\thesubsubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{0.9em}{0.4em}
+\titlespacing*{\subsection}{0pt}{0.8em}{0.3em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{Primary}{OptiShift Technical Specification}}
+\fancyhead[R]{\textcolor{Primary}{\thepage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\headheight}{14pt}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\req}[1]{\textbf{\textcolor{Primary}{#1}}}
+\newcommand{\thead}[1]{\textcolor{HeaderText}{\textbf{#1}}}
+\begin{document}
+\pagecolor{PageBg}
+\color{BodyText}
+
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+  \centering
+  \vspace*{1.8cm}
+  {\Huge \textbf{\textcolor{Primary}{OptiShift}} \par}
+  \vspace{0.4cm}
+  {\Large \textcolor{Accent}{Technical and Functional Specification} \par}
+  \vspace{1.3cm}
+
+  \begin{tcolorbox}[colback=SoftBg,colframe=Primary,boxrule=0.7pt,width=0.88\textwidth]
+    \textbf{System Type:} Data-driven SaaS ERP for hospitality workforce planning and operations \\
+    \textbf{Prepared By:} Mohammad \\
+    \textbf{Technical Mentor:} Aliakbar \\
+    \textbf{Date:} February 21, 2026 \\
+    \textbf{Status:} Baseline specification for implementation
+  \end{tcolorbox}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\pagenumbering{roman}
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+
+\section{Document Control}
+\rowcolors{2}{TableStripe}{SoftBg}
+\begin{tabularx}{\textwidth}{>{\bfseries}P{0.24\textwidth}Y}
+Document ID & OPTI-SPEC-004 \\
+Date & February 21, 2026 \\
+Owner & Lead Architect and Developer \\
+Audience & Engineering, product, mentors, reviewers \\
+Classification & Internal project specification \\
+\end{tabularx}
+
+\section{Executive Summary}
+OptiShift is a hospitality-focused ERP platform for legally compliant scheduling, forecasting-driven staffing optimization, and spatially aware operations management.
+The platform combines:
+\begin{itemize}
+  \item deterministic labor-law enforcement for mission-critical scheduling constraints,
+  \item machine-learning occupancy forecasting and constraint-based auto-scheduling,
+  \item WebGL-based 3D operational visualization,
+  \item offline-capable employee mobility features through PWA patterns,
+  \item optional network and connected-object extension (time-permitting) for real-time operational telemetry.
+\end{itemize}
+
+This document transforms conceptual design into implementation-ready specifications with measurable outcomes and verification methods.
+
+\section{Strategic Objective and Program Alignment}
+Based on the project framing in \texttt{DOC-20260130-WA0000. (3).pdf}, OptiShift is positioned as a senior-junior level capstone that demonstrates both engineering rigor and business maturity for competitive Master's admission.
+
+\begin{itemize}
+  \item Domain legitimacy: project scope is grounded in real hospitality operations and scheduling pain points.
+  \item Management and business value: process optimization, workforce cost control, and role-based enterprise workflows.
+  \item Data and systems value: forecasting and optimization logic to model real-world complexity.
+  \item Reliability and mobility value: legal safety checks, robust architecture, and offline-capable employee experience.
+  \item Optional networking value (time-permitting): edge-to-cloud telemetry flow through secure message transport and device identity controls.
+\end{itemize}
+
+\rowcolors{2}{TableStripe}{SoftBg}
+\begin{tabularx}{\textwidth}{P{0.36\textwidth}Y}
+\toprule
+\rowcolor{HeaderBg}
+\thead{Target Track Focus} & \thead{OptiShift Evidence} \\
+\midrule
+Management and Business IT & RBAC, scheduling workflows, dashboard-driven staffing decisions, and cost-aware planning. \\
+Data and Complex Systems & Occupancy forecasting, rule-constrained optimization, and measurable model-driven recommendations. \\
+Health and Technical Reliability & Safety-oriented rest-rule enforcement, PWA offline continuity, and auditable operational control. \\
+Network, Internet, and Connected Systems (optional) & Optional IoT extension can demonstrate MQTT event ingestion, edge buffering, and observability over distributed connectivity. \\
+\bottomrule
+\end{tabularx}
+
+\section{Purpose, Scope, and Success Criteria}
+\subsection{Purpose}
+Define system behavior, architecture, interfaces, and quality targets required to implement OptiShift reliably in real-world hospitality operations.
+
+\subsection{In Scope}
+\begin{itemize}
+  \item Workforce scheduling and legal compliance controls.
+  \item Occupancy forecasting and staffing recommendation workflows.
+  \item Visual floor-state rendering and employee assignment mapping.
+  \item Employee-facing offline shift visibility and synchronization.
+  \item CI/CD quality gates and release roadmap.
+\end{itemize}
+
+\subsection{Optional Extension Scope (Time-Permitting)}
+\begin{itemize}
+  \item Optional network and connected-object track for ingesting occupancy/device telemetry from edge gateways.
+  \item MQTT-based event pipeline with secure device identity and replay-safe ingestion.
+  \item This extension is explicitly non-blocking for baseline release and will be implemented only if schedule allows.
+\end{itemize}
+
+\subsection{Out of Scope (Current Release)}
+\begin{itemize}
+  \item Payroll disbursement to banks.
+  \item Biometric attendance hardware integration.
+  \item Multi-tenant white-label custom branding.
+\end{itemize}
+
+\subsection{Success Criteria}
+\begin{itemize}
+  \item All mandatory legal constraints enforced at API layer with auditable logs.
+  \item Draft schedules generated within target runtime and accepted by managers.
+  \item Forecast service produces usable staffing recommendations by department.
+  \item Employee users can read schedules while offline and sync updates safely.
+  \item Optional extension success (only if activated): authenticated telemetry events are ingested and reflected in dashboards within target latency.
+\end{itemize}
+
+\section{Stakeholders and Roles}
+\rowcolors{2}{TableStripe}{SoftBg}
+\begin{tabularx}{\textwidth}{P{0.28\textwidth}Y}
+\toprule
+\rowcolor{HeaderBg}
+\thead{Role} & \thead{Primary Responsibility} \\
+\midrule
+Product Owner / Operations Lead & Prioritizes workflows, approves sprint deliverables. \\
+Engineering Lead & Owns architecture, coding standards, and release quality gates. \\
+Backend Engineer & Builds APIs, compliance engine, persistence, and integrations. \\
+ML Engineer & Builds forecasting pipeline, model evaluation, and inference service. \\
+Frontend Engineer & Delivers manager dashboard, employee PWA, and 3D interface. \\
+QA Engineer & Designs functional, regression, and end-to-end test plans. \\
+\bottomrule
+\end{tabularx}
+
+\section{Assumptions and Constraints}
+\begin{tcolorbox}[colback=SoftBg,colframe=Accent,title=Operating Assumptions]
+\begin{itemize}
+  \item Primary deployment target is one hospitality group with standardized shift policies.
+  \item Baseline legal rule: minimum rest period between shifts is 11 hours.
+  \item Historical occupancy data is available for model training.
+  \item Teams operate on weekly scheduling cycles with manager approvals.
+  \item Optional extension assumption: if time allows, selected properties can expose basic edge telemetry through a gateway layer.
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=SoftBg,colframe=Primary,title=Key Constraints]
+\begin{itemize}
+  \item Must run as containerized microservices.
+  \item PostgreSQL is the system of record for operational data.
+  \item Authentication and authorization must be JWT and role-based.
+  \item All critical decisions must be traceable in logs for audit review.
+  \item Optional network extension must not delay baseline release gate (Weeks 1--12).
+\end{itemize}
+\end{tcolorbox}
+
+\section{System Context and Architecture}
+\subsection{High-Level Architecture}
+OptiShift uses a microservice architecture with three core runtime services:
+\begin{itemize}
+  \item \textbf{optishift-api} (Node.js/Express): business rules, RBAC, scheduling, and orchestration.
+  \item \textbf{optishift-ai} (Python/FastAPI): forecasting and staffing recommendations.
+  \item \textbf{optishift-db} (PostgreSQL 15): transactional persistence and reporting queries.
+\end{itemize}
+
+Optional time-permitting extension services:
+\begin{itemize}
+  \item \textbf{optishift-ingest} (FastAPI or NestJS worker): receives telemetry events, validates device identity, and normalizes payloads.
+  \item \textbf{message broker} (MQTT): transports edge telemetry with topic-based routing.
+\end{itemize}
+
+\subsection{Primary Data Flow}
+\begin{enumerate}
+  \item Manager submits shift draft via frontend.
+  \item API validates identity, permissions, and legal constraints.
+  \item API persists approved assignments and emits audit records.
+  \item AI service consumes occupancy history and returns staffing recommendations.
+  \item 3D view reads assignment state and maps users to spatial coordinates.
+\end{enumerate}
+
+\subsection{Optional Data Flow: Edge Telemetry (Time-Permitting)}
+\begin{enumerate}
+  \item Edge gateway publishes occupancy/device events to MQTT topics.
+  \item Ingest service authenticates source, validates schema, and deduplicates event IDs.
+  \item Valid telemetry is persisted for analytics and surfaced to operations dashboards.
+\end{enumerate}
+
+\section{Detailed Technology Stack}
+\subsection{Platform Layers and Technologies}
+\rowcolors{2}{TableStripe}{SoftBg}
+\begin{longtable}{P{0.18\textwidth}P{0.24\textwidth}P{0.46\textwidth}}
+\toprule
+\rowcolor{HeaderBg}
+\thead{Layer} & \thead{Technology} & \thead{Implementation Detail and Why It Is Used} \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{HeaderBg}
+\thead{Layer} & \thead{Technology} & \thead{Implementation Detail and Why It Is Used} \\
+\midrule
+\endhead
+Web frontend & React + TypeScript + Tailwind CSS & Component-driven UI for manager dashboard and employee portal. TypeScript gives stricter contracts and fewer runtime bugs. Tailwind speeds up consistent design tokens. \\
+3D visualization & Three.js + React Three Fiber & Renders floor plans and employee assignment nodes. React Three Fiber keeps the 3D scene manageable in the same component system as the rest of the frontend. \\
+Offline mobile UX & PWA (Service Worker + IndexedDB) & Enables shift visibility and deferred actions without internet. IndexedDB stores cached schedule snapshots and queued user intents for later synchronization. \\
+API backend & Node.js + NestJS (or Express modular architecture) & Handles RBAC, legal validation, scheduling workflows, and orchestration between persistence and AI services. NestJS-style modular structure keeps domain boundaries explicit. \\
+AI microservice & Python + FastAPI + pandas/scikit-learn & Hosts forecast endpoints and optimization logic. FastAPI gives typed contracts and high-performance async serving for model inference. \\
+Optimization engine & OR-Tools CP-SAT + Genetic Algorithm strategy & CP-SAT solves hard constraints (law and staffing minimums). Genetic search explores near-optimal schedules when objective complexity grows. \\
+Primary database & PostgreSQL 15 & ACID transactions, strong relational constraints, and reliable query performance for shift, department, and audit domains. \\
+Cache and queues & Redis + background job workers & Improves read performance for repeated dashboard queries and runs forecast/scheduler tasks asynchronously without blocking API requests. \\
+CI/CD and runtime & Docker + Docker Compose + GitHub Actions & Reproducible local/staging environments, automated tests, linting, image builds, and controlled deployment pipeline gates. \\
+Testing stack & Jest, Supertest, Playwright, pytest & Unit + integration + E2E + model-service checks provide coverage across legal rules, API behavior, UI flow, and forecasting contracts. \\
+Observability & OpenTelemetry, structured logs, Prometheus/Grafana & Correlates requests across services, tracks latency and errors, and gives actionable dashboards for reliability and incident response. \\
+Optional network extension & MQTT broker (Mosquitto or EMQX), edge gateway agent, protobuf/JSON schema validation & Time-permitting track for connected-object ingestion. Broker decouples producers and consumers; gateway buffers intermittent connectivity; schema validation protects data contracts. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Technology Selection Notes}
+\begin{itemize}
+  \item The architecture is intentionally polyglot: JavaScript/TypeScript for product APIs and Python for ML-heavy workloads.
+  \item Strict API contracts between services are required to keep independent deployment possible.
+  \item Every critical workflow (schedule write, legal rejection, forecast job) must emit traceable telemetry.
+  \item Optional network extension is a controlled add-on: it is enabled only if baseline quality gates are already green.
+\end{itemize}
+
+\section{Hard Concepts Explained}
+\subsection{Constraint Satisfaction Problem (CSP) and CP-SAT}
+A CSP means finding a valid schedule while respecting non-negotiable rules.
+In OptiShift, examples include minimum rest periods and minimum staffing by department.
+CP-SAT is used to guarantee these hard rules are never violated before optimization goals are considered.
+
+\subsection{Genetic Algorithm for Schedule Optimization}
+A genetic algorithm starts from many candidate schedules, scores them, and repeatedly mutates/recombines them.
+Over iterations, weak schedules are discarded and stronger ones survive.
+In OptiShift, this is useful when there are many competing soft objectives such as fairness, cost, and preference balancing.
+
+\subsection{Time-Series Forecasting and Model Drift}
+Time-series forecasting estimates future occupancy from historical booking behavior.
+Model drift occurs when real-world behavior changes and the old model becomes less accurate.
+OptiShift should monitor prediction error over time and retrain when accuracy falls below the release threshold.
+
+\subsection{Offline-First Synchronization}
+Offline-first means users can continue core actions with unstable connectivity.
+When connection returns, local queued actions sync to the server.
+Conflict policies are required because server data may change while the client is offline.
+
+\subsection{Digital Twin State Consistency}
+The digital twin is a visual mirror of operational state, not the source of truth.
+PostgreSQL remains authoritative, while the 3D layer reflects API state with low delay.
+This avoids visual drift and keeps legal/operational decisions anchored to auditable backend records.
+
+\subsection{JWT and RBAC Together}
+JWT proves identity and carries claims; RBAC uses those claims plus server-side rules to authorize actions.
+In OptiShift, a valid token alone is not enough: department scope and role permissions must still pass.
+
+\subsection{MQTT, QoS, and Edge Buffering (Optional Extension)}
+MQTT is a lightweight publish-subscribe protocol useful for unstable connectivity and many producers.
+For OptiShift's optional extension, QoS levels and gateway-side buffering reduce event loss during short outages.
+Events are accepted only when they pass device authentication and schema validation.
+
+\section{Functional Requirements}
+
+\subsection{Module 1: ERP and Legal Compliance Engine}
+\rowcolors{2}{TableStripe}{SoftBg}
+\begin{longtable}{P{0.13\textwidth}P{0.47\textwidth}P{0.28\textwidth}}
+\toprule
+\rowcolor{HeaderBg}
+\thead{ID} & \thead{Requirement} & \thead{Acceptance Criterion} \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{HeaderBg}
+\thead{ID} & \thead{Requirement} & \thead{Acceptance Criterion} \\
+\midrule
+\endhead
+\req{FR-LEG-001} & System shall reject shift assignments when $\Delta t < 11$ hours between prior shift end and new shift start. & API returns HTTP 409 with reason code \texttt{REST\_WINDOW\_VIOLATION}. Unit and integration tests pass. \\
+\req{FR-LEG-002} & System shall enforce RBAC for schedule operations by department scope. & Unauthorized cross-department update attempt returns HTTP 403 and audit event is logged. \\
+\req{FR-LEG-003} & System shall compute labor cost totals including overtime and night premium factors. & Payroll analytics endpoint returns total cost and factor breakdown for a selected date range. \\
+\req{FR-LEG-004} & All schedule create/update/delete events shall produce immutable audit records. & Audit table contains actor, timestamp, change summary, and request correlation ID. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Module 2: Predictive AI and Auto-Scheduling}
+\rowcolors{2}{TableStripe}{SoftBg}
+\begin{longtable}{P{0.13\textwidth}P{0.47\textwidth}P{0.28\textwidth}}
+\toprule
+\rowcolor{HeaderBg}
+\thead{ID} & \thead{Requirement} & \thead{Acceptance Criterion} \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{HeaderBg}
+\thead{ID} & \thead{Requirement} & \thead{Acceptance Criterion} \\
+\midrule
+\endhead
+\req{FR-AI-001} & Forecasting service shall predict occupancy for at least 7 future days by department-relevant granularity. & Forecast endpoint returns dated predictions and confidence metadata for each horizon day. \\
+\req{FR-AI-002} & Auto-scheduler shall generate draft schedules minimizing labor cost while satisfying legal and minimum staffing constraints. & Generated schedule includes no hard-constraint violations and objective cost value. \\
+\req{FR-AI-003} & Forecast and scheduler runs shall store versioned execution metadata. & Metadata includes model version, data window, runtime, and execution status. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Module 3: 3D Digital Twin and Spatial Mapping}
+\rowcolors{2}{TableStripe}{SoftBg}
+\begin{longtable}{P{0.13\textwidth}P{0.47\textwidth}P{0.28\textwidth}}
+\toprule
+\rowcolor{HeaderBg}
+\thead{ID} & \thead{Requirement} & \thead{Acceptance Criterion} \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{HeaderBg}
+\thead{ID} & \thead{Requirement} & \thead{Acceptance Criterion} \\
+\midrule
+\endhead
+\req{FR-3D-001} & Client shall render floor plan in WebGL using Three.js or equivalent scene graph engine. & Scene initializes with configured floor meshes and camera controls on supported browsers. \\
+\req{FR-3D-002} & Employee assignments shall be mapped to coordinates and rendered as interactive nodes. & Clicking node opens assignment details (user, role, floor, shift window). \\
+\req{FR-3D-003} & Spatial state refresh shall be near real-time. & Assignment updates visible in the twin within 5 seconds of API state change in staging tests. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Module 4: Offline-First Mobility}
+\rowcolors{2}{TableStripe}{SoftBg}
+\begin{longtable}{P{0.13\textwidth}P{0.47\textwidth}P{0.28\textwidth}}
+\toprule
+\rowcolor{HeaderBg}
+\thead{ID} & \thead{Requirement} & \thead{Acceptance Criterion} \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{HeaderBg}
+\thead{ID} & \thead{Requirement} & \thead{Acceptance Criterion} \\
+\midrule
+\endhead
+\req{FR-MOB-001} & Employee portal shall support schedule read access when offline. & With network disabled, cached schedule remains viewable with last-sync timestamp. \\
+\req{FR-MOB-002} & Client shall queue supported user actions while offline and retry on reconnect. & Queued actions synchronize successfully or surface conflict resolution prompt. \\
+\req{FR-MOB-003} & Service Worker and IndexedDB storage shall implement safe cache invalidation. & Versioned cache policy clears obsolete assets without corrupting local shift data. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Module 5 (Optional, Time-Permitting): Network and Connected Objects}
+\rowcolors{2}{TableStripe}{SoftBg}
+\begin{longtable}{P{0.13\textwidth}P{0.47\textwidth}P{0.28\textwidth}}
+\toprule
+\rowcolor{HeaderBg}
+\thead{ID} & \thead{Requirement} & \thead{Acceptance Criterion} \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{HeaderBg}
+\thead{ID} & \thead{Requirement} & \thead{Acceptance Criterion} \\
+\midrule
+\endhead
+\req{FR-NET-001} & If optional extension is activated, system shall ingest MQTT telemetry from approved edge gateways using authenticated clients. & In staging, authenticated gateway events are accepted and unauthorized clients are rejected. \\
+\req{FR-NET-002} & Ingest pipeline shall perform schema validation and event ID deduplication before persistence. & Invalid payloads return validation error and duplicates do not create multiple records. \\
+\req{FR-NET-003} & Telemetry dashboard view shall display latest connected-source status and event freshness. & Dashboard shows source heartbeat timestamp and latest event age for monitored topics. \\
+\bottomrule
+\end{longtable}
+
+\section{Non-Functional Requirements}
+\rowcolors{2}{TableStripe}{SoftBg}
+\begin{longtable}{P{0.14\textwidth}P{0.21\textwidth}P{0.20\textwidth}P{0.27\textwidth}}
+\toprule
+\rowcolor{HeaderBg}
+\thead{ID} & \thead{Category} & \thead{Target} & \thead{Verification} \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{HeaderBg}
+\thead{ID} & \thead{Category} & \thead{Target} & \thead{Verification} \\
+\midrule
+\endhead
+\req{NFR-AVL-001} & Availability & $\geq$ 99.5\% monthly uptime (excluding planned maintenance) & Synthetic uptime checks and incident reports. \\
+\req{NFR-PERF-001} & API Performance & p95 response time $<$ 300 ms for core scheduling APIs at baseline load & Load tests in CI and staging benchmarks. \\
+\req{NFR-PERF-002} & Scheduler Runtime & Draft schedule generation for one week completes in $<$ 90 seconds for baseline property size & Performance test dataset and timed job telemetry. \\
+\req{NFR-SEC-001} & Authentication & JWT access tokens with expiry and refresh policy; role claims validated server-side & Security integration tests and token misuse tests. \\
+\req{NFR-SEC-002} & Data Protection & Password hashing, TLS in transit, least-privilege DB access & Security checklist and deployment config audit. \\
+\req{NFR-OBS-001} & Observability & Structured logs, trace IDs, and service metrics for all critical paths & Log sampling and dashboard review during test runs. \\
+\req{NFR-MNT-001} & Maintainability & Service boundaries documented with API contracts and migration history & Architecture review and docs completeness check. \\
+\req{NFR-NET-001} & Optional network extension & If enabled, telemetry ingestion p95 end-to-dashboard latency $<$ 5 seconds under staging baseline load & Telemetry load test and dashboard freshness checks (executed only when optional track is activated). \\
+\bottomrule
+\end{longtable}
+
+\section{Data Model Baseline}
+\subsection{Core Entities}
+\rowcolors{2}{TableStripe}{SoftBg}
+\begin{tabularx}{\textwidth}{P{0.22\textwidth}P{0.22\textwidth}Y}
+\toprule
+\rowcolor{HeaderBg}
+\thead{Table} & \thead{Primary Key} & \thead{Key Fields and Relationships} \\
+\midrule
+Users & user\_id (UUID) & role\_id (FK), dept\_id (FK), base\_salary, contract\_hours, password\_hash \\
+Shifts & shift\_id (UUID) & user\_id (FK), dept\_id (FK), start\_time, end\_time, status \\
+Departments & dept\_id (UUID) & name, min\_staff\_required, cost\_center\_code \\
+OccupancyLog & log\_id (UUID) & date, rooms\_booked, forecasted\_occupancy, model\_version \\
+AuditLog & audit\_id (UUID) & actor\_id, action\_type, entity\_type, entity\_id, request\_id, timestamp \\
+\bottomrule
+\end{tabularx}
+
+\begin{tcolorbox}[colback=SoftBg,colframe=Accent,title=Schema Readability Note]
+When embedding the ER diagram, use high-contrast labels, minimum 10pt node text, and avoid low-opacity connectors so the schema remains readable in print and on-screen.
+\end{tcolorbox}
+
+\subsection{Schema Constraints}
+\begin{itemize}
+  \item Index \texttt{Shifts(user\_id, start\_time)} for fast rest-window checks.
+  \item Enforce UTC timestamp storage for shift boundaries.
+  \item Use foreign key constraints to prevent orphaned schedule records.
+  \item Keep schema migrations versioned and reversible.
+\end{itemize}
+
+\section{API Contract Baseline}
+\rowcolors{2}{TableStripe}{SoftBg}
+\begin{tabularx}{\textwidth}{P{0.14\textwidth}P{0.31\textwidth}P{0.18\textwidth}Y}
+\toprule
+\rowcolor{HeaderBg}
+\thead{Method} & \thead{Path} & \thead{Auth} & \thead{Behavior} \\
+\midrule
+POST & \texttt{/api/v1/auth/login} & Public & Returns JWT access and refresh tokens. \\
+POST & \texttt{/api/v1/shifts} & Manager+ & Creates shift after legal and staffing validation checks. \\
+PATCH & \texttt{/api/v1/shifts/\{id\}} & Manager+ & Updates shift and revalidates legal constraints. \\
+GET & /api/v1/schedules/\{deptId\} & Department scope & Returns date-bounded schedule view by department. \\
+POST & \texttt{/api/v1/forecast/run} & Manager+ & Triggers occupancy forecasting job and returns run ID. \\
+GET & \texttt{/api/v1/twin/state} & Authenticated & Returns coordinate-mapped assignment snapshot. \\
+POST & \texttt{/api/v1/iot/events} (optional) & Device token / mTLS gateway & Receives telemetry payloads when optional network extension is activated. \\
+GET & \texttt{/api/v1/iot/status} (optional) & Manager+ & Returns source health and latest event timestamps when optional extension is active. \\
+\bottomrule
+\end{tabularx}
+
+\section{Security and Compliance Baseline}
+\begin{itemize}
+  \item RBAC policies defined per endpoint and department ownership.
+  \item JWT signing keys rotated by operational policy.
+  \item Sensitive fields encrypted at rest where applicable.
+  \item Audit logs retained based on legal and operational retention windows.
+  \item Legal rule configuration externalized for future jurisdiction expansion.
+  \item Optional network extension security: device identity verification (token or mTLS), topic-level access control, and replay protection for event IDs.
+\end{itemize}
+
+\section{Testing and Quality Gates}
+\subsection{Test Layers}
+\begin{itemize}
+  \item Unit tests for legal rule calculations and utility functions.
+  \item Integration tests for API + DB behavior (including 409 and 403 paths).
+  \item ML validation tests for forecast quality and data contract checks.
+  \item End-to-end tests for manager workflow and employee offline workflow.
+  \item Optional extension tests (only if activated): MQTT ingest auth tests, schema validation tests, and telemetry freshness checks.
+\end{itemize}
+
+\subsection{CI/CD Pipeline}
+\begin{enumerate}
+  \item Lint and static checks.
+  \item Unit and integration test suites.
+  \item Build Docker images for API and AI services.
+  \item Deploy to staging and run smoke tests.
+  \item Gate production release on explicit approval.
+\end{enumerate}
+
+\section{Delivery Roadmap}
+\rowcolors{2}{TableStripe}{SoftBg}
+\begin{tabularx}{\textwidth}{P{0.08\textwidth}P{0.13\textwidth}P{0.13\textwidth}P{0.23\textwidth}Y}
+\toprule
+\rowcolor{HeaderBg}
+\thead{Sprint} & \thead{Start} & \thead{End} & \thead{Theme} & \thead{Key Deliverables} \\
+\midrule
+S1 & Week 1 & Week 2 & Architecture and Infrastructure & Schema approval, API scaffold, CI baseline. \\
+S2 & Week 3 & Week 4 & Security and Core API & JWT auth, RBAC checks, shift CRUD, legal validation. \\
+S3 & Week 5 & Week 6 & Frontend and PWA & Manager dashboard, employee portal, offline sync queue. \\
+S4 & Week 7 & Week 8 & AI Integration & Forecast pipeline, baseline model, recommendation API. \\
+S5 & Week 9 & Week 10 & 3D Digital Twin & WebGL renderer, coordinate map, assignment interaction. \\
+S6 & Week 11 & Week 12 & Hardening and Release & End-to-end stabilization, release hardening, final docs. \\
+OPT & Week 11 & Week 12 & Optional Network Extension (if time) & MQTT ingest PoC, gateway auth, telemetry dashboard status cards. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Gantt Chart (12 Week Execution Plan)}
+\begin{tcolorbox}[colback=SoftBg,colframe=Accent,boxrule=0.6pt]
+\textbf{Roadmap note:} Bars labeled as optional are executed only if baseline sprints (S1--S6) remain on track and quality gates are green. Code key: S1--S6 = baseline sprint sequence; QA = cross-cutting quality assurance/UAT stream (Weeks 4--12); OPT = optional network extension.
+\end{tcolorbox}
+\begin{center}
+\small
+\begin{ganttchart}[
+  x unit=0.72cm,
+  y unit title=0.50cm,
+  y unit chart=0.48cm,
+  vgrid,
+  hgrid,
+  title label font=\footnotesize\bfseries\color{BodyText},
+  bar label font=\scriptsize\color{BodyText},
+  bar label node/.append style={text width=2.6cm,align=left},
+  milestone label font=\scriptsize\color{BodyText},
+  milestone label node/.append style={text width=2.6cm,align=left},
+  bar height=0.46,
+  bar/.append style={fill=GanttBar,draw=HeaderBg},
+  bar incomplete/.append style={fill=GanttBar,draw=HeaderBg},
+  milestone/.append style={fill=Accent,draw=Accent},
+  link/.style={draw=Accent,line width=0.8pt,-}
+]{1}{12}
+\gantttitle{OptiShift Project Timeline by Week}{12} \\
+\gantttitlelist{1,...,12}{1} \\
+\ganttbar[name=s1]{S1}{1}{2} \\
+\ganttbar[name=s2]{S2}{3}{4} \\
+\ganttbar[name=s3]{S3}{5}{6} \\
+\ganttbar[name=s4]{S4}{7}{8} \\
+\ganttbar[name=s5]{S5}{9}{10} \\
+\ganttbar[name=s6]{S6}{11}{12} \\
+\ganttbar[name=qa]{QA}{4}{12} \\
+\ganttbar[name=opt,bar/.append style={fill=GanttBarAlt,draw=HeaderBg,densely dashed}]{OPT}{11}{12} \\
+\ganttmilestone[name=gate]{Release readiness gate}{12} \\
+\ganttlink{s1}{s2}
+\ganttlink{s2}{s3}
+\ganttlink{s3}{s4}
+\ganttlink{s4}{s5}
+\ganttlink{s5}{s6}
+\ganttlink{s6}{gate}
+\end{ganttchart}
+\normalsize
+
+\end{center}
+
+\section{Risk Register}
+\rowcolors{2}{TableStripe}{SoftBg}
+\begin{tabularx}{\textwidth}{P{0.18\textwidth}P{0.16\textwidth}Y}
+\toprule
+\rowcolor{HeaderBg}
+\thead{Risk} & \thead{Severity} & \thead{Mitigation} \\
+\midrule
+Poor data quality for forecasting & High & Add data validation pipeline and fallback staffing heuristics. \\
+Complex legal rule changes by region & High & Externalize rule configuration and implement rule versioning. \\
+3D twin performance on low-end devices & Medium & Add quality presets and progressive rendering strategy. \\
+Offline sync conflicts & Medium & Implement deterministic conflict policy and user prompts. \\
+Scope creep across modules & Medium & Enforce requirement traceability and sprint acceptance gates. \\
+Optional network extension delays baseline & Medium & Time-box optional work, start only after baseline health checks, and permit deferral without blocking release. \\
+\bottomrule
+\end{tabularx}
+
+\section{Acceptance and Sign-Off Checklist}
+\begin{itemize}
+  \item All mandatory FR and NFR entries mapped to tests and verification evidence.
+  \item No open high-severity security findings in staging environment.
+  \item UAT sign-off from operations workflow owner.
+  \item Deployment runbook validated with rollback drill.
+  \item Documentation package complete (API, architecture, operations).
+\end{itemize}
+
+\section{Traceability Matrix (Condensed)}
+\rowcolors{2}{TableStripe}{SoftBg}
+\begin{tabularx}{\textwidth}{P{0.22\textwidth}P{0.30\textwidth}Y}
+\toprule
+\rowcolor{HeaderBg}
+\thead{Feature Area} & \thead{Requirements} & \thead{Primary Verification} \\
+\midrule
+Legal compliance engine & FR-LEG-001..004 & Unit + integration tests, audit-log assertions \\
+AI scheduling & FR-AI-001..003 & Model validation tests, scheduler constraint checks \\
+3D digital twin & FR-3D-001..003 & UI integration tests and latency checks \\
+Offline mobility & FR-MOB-001..003 & Offline E2E scenarios and sync conflict tests \\
+Optional network extension & FR-NET-001..003, NFR-NET-001 & Telemetry ingest tests, auth checks, and freshness latency validation (if optional track is activated) \\
+Platform quality & NFR suite (availability, performance, security, observability, maintainability) & Load tests, security checks, observability reviews \\
+\bottomrule
+\end{tabularx}
+
+\end{document}
