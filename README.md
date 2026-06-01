@@ -1,6 +1,6 @@
-# OptiShift
+# Planora
 
-OptiShift is a hospitality-focused ERP platform for workforce planning, legal-compliant scheduling, occupancy forecasting, and operational visualization.
+Planora is a hospitality-focused ERP platform for workforce planning, legal-compliant scheduling, occupancy forecasting, and operational visualization.
 
 This repository is currently aligned with a formal technical specification and follows a specification-first development approach.
 
@@ -29,9 +29,9 @@ The optional network track is explicitly non-blocking for the baseline release.
 
 ## Target Architecture
 
-- `optishift-api` (Node.js/Express): business rules, RBAC, scheduling orchestration
-- `optishift-ai` (Python/FastAPI): forecasting and recommendation services
-- `optishift-db` (PostgreSQL): operational source of truth
+- `planora-api` (Node.js/Express): business rules, RBAC, scheduling orchestration
+- `planora-ai` (Python/FastAPI): forecasting and recommendation services
+- `planora-db` (PostgreSQL): operational source of truth
 - Frontend (React + TypeScript): manager dashboard and employee portal
 - 3D layer (Three.js / React Three Fiber): interactive floor and assignment mapping
 - Optional extension: MQTT broker + ingest service for edge telemetry
@@ -61,11 +61,21 @@ The optional network track is explicitly non-blocking for the baseline release.
 
 ## Current Repository Status
 
-- Specification-complete baseline (`OPTI-SPEC-004`)
+- Specification-complete baseline (`PLAN-SPEC-004`)
 - Implementation to follow sprint-by-sprint roadmap
 - Optional network extension included as a conditional scope
 
 ## Specification Documents
 
-- Main technical specification (LaTeX): `../docs/specs/optishift_technical_spec_v3.tex`
-- Main technical specification (PDF): `../docs/specs/optishift_technical_spec_v3.pdf`
+- Main technical specification (LaTeX): `../docs/specs/planora_technical_spec_v3.tex`
+- Main technical specification (PDF): `../docs/specs/planora_technical_spec_v3.pdf`
+
+## Maintainer
+
+Ali Akbar Shahriari Garaei
+
+## License
+
+Apache License 2.0 — see [LICENSE](LICENSE) for details.
+
+Copyright 2026 Ali Akbar Shahriari Garaei
