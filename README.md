@@ -65,11 +65,6 @@ The optional network track is explicitly non-blocking for the baseline release.
 - Implementation to follow sprint-by-sprint roadmap
 - Optional network extension included as a conditional scope
 
-## Specification Documents
-
-- Main technical specification (LaTeX): `../docs/specs/planora_technical_spec_v3.tex`
-- Main technical specification (PDF): `../docs/specs/planora_technical_spec_v3.pdf`
-
 ## Maintainer
 
 Ali Akbar Shahriari Garaei
